@@ -6,11 +6,13 @@ import os.path
 
 
 def pega_dados():
+
     print("Será solicitado apenas na primeira vez do uso do software.")
-    time.sleep(5)
-    user = input("Digite seu usuario do portal RH:")
-    password = input("Digite seu senha do portal RH:")
-    my_data = {'user': user, 'password': password}
+    time.sleep(2)
+    url = input("Digite a url do portal RH: ")
+    user = input("Digite seu usuario do portal RH: ")
+    password = input("Digite seu senha do portal RH: ")
+    my_data = {'url': url, 'user': user, 'password': password}
     with open('data.json', 'w') as t:
         json.dump(my_data, t)
 
@@ -25,21 +27,25 @@ def data_user():
         with open('data.json', 'r') as f:
             inputtt = json.load(f)
 
+            url = inputtt['url']
             user = inputtt['user']
             password = inputtt['password']
 
-    return user, password
+    return url, user, password
+
 
 def install_library():
+
     os.system('pip install -r requirements.txt')
 
 
 def bate_ponto():
+
     install_library()
-    user, password = data_user()
+    url, user, password = data_user()
 
     chrome = webdriver.Chrome(executable_path=r'chromedriver.exe')
-    chrome.get("https://apdata.com.br/everis/")
+    chrome.get(url)
     time.sleep(3)
     chrome.find_element_by_xpath('//*[@id="button-1020-btnEl"]').click()
     # digitar o usuário
